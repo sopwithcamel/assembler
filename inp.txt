@@ -6,3 +6,5 @@ ABCDEFG//////
 
 ACDEF**A+--
 
+AB*C+D@*
+A@B@C@++

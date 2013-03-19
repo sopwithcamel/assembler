@@ -46,12 +46,16 @@ class Assembler {
                         // directly to the input operand.
                         do {
                             assert(next_char(buf, next));
-                            if (is_operand(next)) {
+                            if (is_operand(next) || is_unary_operator(next)) {
                                 fprintf(outf, "ST $%d\n", last_temp_used);
                                 temp[last_temp_used++] = reg;
                                 fprintf(outf, "L %c\n", c);
                                 reg = c;
                                 c = next;
+                                if (is_unary_operator(next)) {
+                                    fprintf(outf, "N\n", c);
+                                    break;
+                                }
                             } else {
                                 // it's an operator...
                                 switch (next) {
@@ -81,6 +85,9 @@ class Assembler {
                 // the latest temporary location.
                 assert(regstate == LOADED && "Need operand to add");
                 switch (c) {
+                    case '@':
+                        fprintf(outf, "N\n");
+                        break; 
                     case '+':
                         assert(last_temp_used > 0);                        
                         fprintf(outf, "A $%d\n", last_temp_used - 1);
@@ -132,8 +139,15 @@ class Assembler {
     }
 
     // check if operator
-    bool is_operator(char c) {
+    bool is_binary_operator(char c) {
         if (c == '+' || c == '-' || c == '*' || c == '/')
+            return true;
+        return false;
+    }
+
+    // check if operator
+    bool is_unary_operator(char c) {
+        if (c == '@')
             return true;
         return false;
     }
@@ -145,7 +159,8 @@ class Assembler {
             return false;
         // skip past spaces
         for (; buf[offset] == ' '; ++offset);
-        if (is_operand(buf[offset]) || is_operator(buf[offset])) {
+        if (is_operand(buf[offset]) || is_binary_operator(buf[offset]) ||
+                is_unary_operator(buf[offset])) {
             c = buf[offset];
             ++offset;
             return true;
