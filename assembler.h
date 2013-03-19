@@ -61,6 +61,12 @@ class Assembler {
                                     case '-':
                                         fprintf(outf, "S %c\n", c);
                                         break;
+                                    case '*':
+                                        fprintf(outf, "M %c\n", c);
+                                        break;
+                                    case '/':
+                                        fprintf(outf, "D %c\n", c);
+                                        break;
                                 }
                                 break;
                             }
@@ -84,6 +90,23 @@ class Assembler {
                         assert(last_temp_used > 0);                        
                         fprintf(outf, "N\n");
                         fprintf(outf, "A $%d\n", last_temp_used - 1);
+                        --last_temp_used;
+                        break;
+                    case '*':
+                        assert(last_temp_used > 0);                        
+                        fprintf(outf, "M $%d\n", last_temp_used - 1);
+                        --last_temp_used;
+                        break;
+                    case '/':
+                        assert(last_temp_used > 0);                        
+                        // store contents of register
+                        fprintf(outf, "ST $%d\n", last_temp_used);
+                        temp[last_temp_used++] = reg;
+                        // load previous value
+                        fprintf(outf, "L $%d\n", last_temp_used - 2);
+                        fprintf(outf, "D $%d\n", last_temp_used - 1);
+                        // remove both from temp space
+                        --last_temp_used;
                         --last_temp_used;
                         break;
                 }
@@ -110,7 +133,7 @@ class Assembler {
 
     // check if operator
     bool is_operator(char c) {
-        if (c == '+' || c == '-')
+        if (c == '+' || c == '-' || c == '*' || c == '/')
             return true;
         return false;
     }

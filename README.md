@@ -1,5 +1,6 @@
-Time to solve: 2hrs
-Clean up + documentation: 20 mins
+* Time to solve: 2hrs
+* Add Mult. and Div. support: 10 mins
+* Clean up + documentation: 20 mins
 
 Assumptions:
 * Operands are letters between A and Z
