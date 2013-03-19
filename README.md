@@ -2,6 +2,7 @@
 * Add Mult. and Div. support: 10 mins
 * Clean up + documentation: 20 mins
 * Had forgotten unary operator: 20 mins
+
 Done.
 
 Assumptions:
@@ -27,3 +28,4 @@ Transition table:
     LOADED      Operator            LOADED                Apply operator to latest temp. variable
 
 
+One special case that has to be handled is the unary operator.
