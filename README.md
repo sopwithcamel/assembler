@@ -14,13 +14,13 @@ inputs which can be either operands or operators.
 
 Transition table:
 
-//State       Input               Output state          Output action
-//-----------------------------------------------------------------------
-//
-//EMPTY       Operand             EMPTY                 Load operand
-//EMPTY       Operator            ERROR                   -
-//LOADED      Operand&Operator    LOADED                Apply operator to input             
-//LOADED      Operand&Operand     LOADED                Store into temp and load new operand
-//LOADED      Operator            LOADED                Apply operator to latest temp. variable
+    State       Input               Output state          Output action
+    -----------------------------------------------------------------------
+    
+    EMPTY       Operand             EMPTY                 Load operand
+    EMPTY       Operator            ERROR                   -
+    LOADED      Operand&Operator    LOADED                Apply operator to input             
+    LOADED      Operand&Operand     LOADED                Store into temp and load new operand
+    LOADED      Operator            LOADED                Apply operator to latest temp. variable
 
 
